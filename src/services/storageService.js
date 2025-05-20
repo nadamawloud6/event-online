@@ -1,9 +1,9 @@
 // Clés utilisées pour le stockage local
 const STORAGE_KEYS = {
-  EVENTS: 'eventonline_events',
-  REGISTRATIONS: 'eventonline_registrations',
-  USERS: 'eventonline_users',
-  NAVIGATION: 'eventonline_navigation',
+  EVENTS: 'smartevent_events',
+  REGISTRATIONS: 'smartevent_registrations',
+  USERS: 'smartevent_users',
+  NAVIGATION: 'smartevent_navigation',
 };
 
 // Données par défaut (utilisées si aucune donnée n'est trouvée dans le localStorage)
@@ -51,8 +51,23 @@ export const getUsers = () => getStoredData(STORAGE_KEYS.USERS, defaultUsers);
 export const storeUsers = (users) => storeData(STORAGE_KEYS.USERS, users);
 
 // Fonctions pour la navigation
-export const getCurrentPath = () => localStorage.getItem(STORAGE_KEYS.NAVIGATION) || '/';
-export const storeCurrentPath = (path) => localStorage.setItem(STORAGE_KEYS.NAVIGATION, path);
+export const getCurrentPath = () => {
+  // Utiliser la clé NAVIGATION pour la cohérence
+  const path = localStorage.getItem(STORAGE_KEYS.NAVIGATION) || '/';
+
+  // S'assurer que currentPath est également mis à jour pour la cohérence
+  if (localStorage.getItem('currentPath') !== path) {
+    localStorage.setItem('currentPath', path);
+  }
+
+  return path;
+};
+
+export const storeCurrentPath = (path) => {
+  // Stocker le chemin dans les deux emplacements pour la cohérence
+  localStorage.setItem(STORAGE_KEYS.NAVIGATION, path);
+  localStorage.setItem('currentPath', path);
+};
 
 // Fonction pour réinitialiser toutes les données (utile pour le développement/test)
 export const resetAllData = () => {

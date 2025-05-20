@@ -21,7 +21,12 @@ const navigationSlice = createSlice({
     clearNavigationHistory: (state) => {
       state.currentPath = '/';
       state.previousPath = null;
-      // Utiliser le service de stockage pour supprimer le chemin actuel
+
+      // Supprimer directement les valeurs du localStorage pour une réinitialisation immédiate
+      localStorage.removeItem('currentPath');
+      localStorage.removeItem('smartevent_navigation');
+
+      // Utiliser également le service de stockage pour une cohérence complète
       import('../../services/storageService').then(module => {
         module.storeCurrentPath('/');
       });

@@ -36,6 +36,7 @@ import {
   AdminPanelSettings as AdminIcon
 } from '@mui/icons-material';
 import { logout } from '../services/authService';
+import { clearNavigationHistory } from '../store/slices/navigationSlice';
 
 // Composant pour cacher la barre de navigation lors du défilement
 function HideOnScroll(props) {
@@ -111,6 +112,18 @@ const Layout = ({ children }) => {
     setMobileDrawerOpen(false);
   };
 
+  // Fonction pour gérer les clics sur le logo et forcer une redirection vers la page d'accueil
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    // Réinitialiser l'historique de navigation
+    dispatch(clearNavigationHistory());
+    // Fermer le tiroir mobile si ouvert
+    setMobileDrawerOpen(false);
+    // Forcer une redirection vers la page d'accueil en contournant React Router
+    // Cela garantit que nous allons toujours à la page d'accueil, quoi qu'il arrive
+    window.location.href = window.location.origin;
+  };
+
   // Vérifier si le chemin actuel est actif
   const isActive = (path) => {
     return location.pathname === path;
@@ -130,25 +143,31 @@ const Layout = ({ children }) => {
         >
           <Toolbar>
             <Fade in={true} timeout={1000}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box
+                component="div"
+                onClick={handleLogoClick}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  textDecoration: 'none',
+                  color: 'white',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                  },
+                  transition: 'color 0.3s ease'
+                }}
+              >
                 <EventIcon sx={{ mr: 1, fontSize: 28 }} />
                 <Typography
                   variant="h5"
-                  component={Link}
-                  to="/"
                   sx={{
                     flexGrow: 1,
-                    textDecoration: 'none',
-                    color: 'white',
                     fontWeight: 'bold',
                     letterSpacing: '0.5px',
-                    '&:hover': {
-                      color: 'rgba(255, 255, 255, 0.8)',
-                    },
-                    transition: 'color 0.3s ease'
                   }}
                 >
-                  Event Online
+                  SmartEvent
                 </Typography>
               </Box>
             </Fade>
@@ -361,10 +380,25 @@ const Layout = ({ children }) => {
         }}
       >
         <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-            <EventIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
-            <Typography variant="h5" color="primary" fontWeight="bold">
-              Event Online
+          <Box
+            component="div"
+            onClick={handleLogoClick}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              mb: 3,
+              textDecoration: 'none',
+              color: 'primary.main',
+              cursor: 'pointer',
+              '&:hover': {
+                color: 'primary.dark',
+              },
+              transition: 'color 0.3s ease'
+            }}
+          >
+            <EventIcon sx={{ mr: 1, fontSize: 28 }} />
+            <Typography variant="h5" fontWeight="bold">
+              SmartEvent
             </Typography>
           </Box>
 
@@ -549,7 +583,7 @@ const Layout = ({ children }) => {
           </List>
 
           <Typography variant="caption" color="text.secondary" sx={{ mt: 'auto', textAlign: 'center' }}>
-            © {new Date().getFullYear()} Event Online
+            © {new Date().getFullYear()} SmartEvent
           </Typography>
         </Box>
       </Drawer>
@@ -593,10 +627,25 @@ const Layout = ({ children }) => {
       >
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 2, sm: 0 } }}>
-              <EventIcon color="primary" sx={{ mr: 1 }} />
-              <Typography variant="h6" color="primary" fontWeight="bold">
-                Event Online
+            <Box
+              component="div"
+              onClick={handleLogoClick}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                mb: { xs: 2, sm: 0 },
+                textDecoration: 'none',
+                color: 'primary.main',
+                cursor: 'pointer',
+                '&:hover': {
+                  color: 'primary.dark',
+                },
+                transition: 'color 0.3s ease'
+              }}
+            >
+              <EventIcon sx={{ mr: 1 }} />
+              <Typography variant="h6" fontWeight="bold">
+                SmartEvent
               </Typography>
             </Box>
 
@@ -614,7 +663,7 @@ const Layout = ({ children }) => {
           <Divider sx={{ my: 2 }} />
 
           <Typography variant="body2" color="text.secondary" align="center">
-            © {new Date().getFullYear()} Event Online. Tous droits réservés.
+            © {new Date().getFullYear()} SmartEvent. Tous droits réservés.
           </Typography>
         </Container>
       </Box>

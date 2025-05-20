@@ -25,7 +25,7 @@ const HomePage = () => {
       >
         <Box sx={{ maxWidth: 'sm', mx: 'auto', textAlign: 'center' }}>
           <Typography variant="h3" component="h1" gutterBottom>
-            Event Online
+            SmartEvent
           </Typography>
           <Typography variant="h5" component="h2" gutterBottom>
             Votre solution complète de gestion d'événements
@@ -60,7 +60,7 @@ const HomePage = () => {
       {/* Features Section */}
       <Box sx={{ mb: 6 }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 3 }}>
-          Pourquoi choisir Event Online ?
+          Pourquoi choisir SmartEvent ?
         </Typography>
 
         <Grid container spacing={3}>

@@ -24,7 +24,22 @@ const NavigationTracker = () => {
   // Restaurer la dernière route visitée lors du montage du composant
   useEffect(() => {
     // Vérifier si nous sommes sur la page d'accueil mais que nous avions une autre page enregistrée
-    const shouldRedirect = location.pathname === '/' && currentPath !== '/' && currentPath !== '';
+    // et que ce n'est pas le résultat d'un clic sur un lien (navigation intentionnelle)
+    const isInitialLoad = document.referrer === '';
+
+    // Vérifier si l'URL contient un paramètre spécial indiquant que nous venons d'un clic sur le logo
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromLogo = urlParams.get('fromLogo') === 'true';
+
+    // Ne pas rediriger si nous venons d'un clic sur le logo
+    if (fromLogo) {
+      return;
+    }
+
+    const shouldRedirect = isInitialLoad &&
+                          location.pathname === '/' &&
+                          currentPath !== '/' &&
+                          currentPath !== '';
 
     // Liste des routes protégées qui nécessitent une authentification
     const protectedRoutes = [
@@ -39,6 +54,7 @@ const NavigationTracker = () => {
     const canAccess = !isProtectedRoute || isAuthenticated;
 
     // Rediriger vers la dernière route visitée si possible
+    // Mais seulement lors du chargement initial de l'application, pas lors des navigations intentionnelles
     if (shouldRedirect && canAccess) {
       navigate(currentPath, { replace: true });
     }
